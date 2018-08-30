@@ -15,11 +15,11 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     public Docket postsApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("clients-api").apiInfo(apiInfo()).select().paths(path()).build();
+        return new Docket(DocumentationType.SWAGGER_2).groupName("locations-api").apiInfo(apiInfo()).select().paths(path()).build();
     }
 
     private Predicate<String> path() {
-        return regex("/client.*");
+        return regex("/location.*");
     }
 
     private ApiInfo apiInfo() {

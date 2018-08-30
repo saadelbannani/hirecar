@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,86 +15,94 @@ import java.time.LocalDate;
 @Table(name = "FACTURE")
 public class Facture implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "FACTURE_ID")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "FACTURE_ID")
+    private Integer id;
 
-	private String factureNumber;
+    @Column(name = "FACTURE_NUMBER")
+    private String factureNumber;
 
-	private String type;
+    @Column(name = "FACTURE_TYPE")
+    private String type;
 
-	private String stat;
+    @Column(name = "FACTURE_STAT")
+    private String stat;
 
-	private Car car;
+    @Column(name = "FACTURE_PRICE")
+    private double price;
 
-	private double price;
+    @Column(name = "FACTURE_START_DATE")
+    private LocalDate startDate;
 
-	private LocalDate startDate;
+    @Column(name = "FACTURE_END_DATE")
+    private LocalDate endDate;
 
-	private LocalDate endDate;
+    @OneToOne
+    @JoinColumn(name = "FACTURE_LOCATION_ID")
+    private Location location;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getFactureNumber() {
-		return factureNumber;
-	}
+    public String getFactureNumber() {
+        return factureNumber;
+    }
 
-	public void setFactureNumber(String factureNumber) {
-		this.factureNumber = factureNumber;
-	}
+    public void setFactureNumber(String factureNumber) {
+        this.factureNumber = factureNumber;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getStat() {
-		return stat;
-	}
+    public String getStat() {
+        return stat;
+    }
 
-	public void setStat(String stat) {
-		this.stat = stat;
-	}
+    public void setStat(String stat) {
+        this.stat = stat;
+    }
 
-	public com.project.hirecar.model.Car getCar() {
-		return car;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public void setCar(com.project.hirecar.model.Car car) {
-		this.car = car;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }

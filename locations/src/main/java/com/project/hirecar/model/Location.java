@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -12,46 +15,62 @@ import java.io.Serializable;
 @Table(name = "LOCATION")
 public class Location implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "LOCATION_ID")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "LOCATION_ID")
+    private Integer id;
 
-	private String locationNumber;
+    @Column(name = "LOCATION_NUMBER")
+    private String locationNumber;
 
-	private Car car;
+    @ManyToOne
+    @JoinColumn(name = "LOCATION_CAR_ID", nullable = false)
+    private Car car;
 
-	private Client client;
+    @ManyToOne
+    @JoinColumn(name = "LOCATION_CLIENT_ID", nullable = false)
+    private Client client;
 
-	public Integer getId() {
-		return id;
-	}
+    @OneToOne(mappedBy = "location")
+    private Facture facture;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getLocationNumber() {
-		return locationNumber;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setLocationNumber(String locationNumber) {
-		this.locationNumber = locationNumber;
-	}
+    public String getLocationNumber() {
+        return locationNumber;
+    }
 
-	public Car getCar() {
-		return car;
-	}
+    public void setLocationNumber(String locationNumber) {
+        this.locationNumber = locationNumber;
+    }
 
-	public void setCar(Car car) {
-		this.car = car;
-	}
+    public Car getCar() {
+        return car;
+    }
 
-	public Client getClient() {
-		return client;
-	}
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Facture getFacture() {
+        return facture;
+    }
+
+    public void setFacture(Facture facture) {
+        this.facture = facture;
+    }
 }
