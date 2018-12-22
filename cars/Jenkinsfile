@@ -1,0 +1,18 @@
+node {
+    stage("Build") {
+        sh "mvn clean package"
+    }
+
+    sh "pwd"
+    sh "cd cars/"
+
+    stage("Docker build") {
+        sh "docker build -t cars ."
+    }
+
+    stage("Docker run") {
+        sh "docker images"
+
+        sh "docker run -p 8090:8090 cars"
+    }
+}

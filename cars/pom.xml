@@ -16,7 +16,6 @@
     <packaging>jar</packaging>
 
     <name>cars</name>
-    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>
@@ -38,6 +37,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>cars</finalName>
     </build>
 
 </project>
