@@ -1,5 +1,8 @@
 package com.project.hirecar.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.hirecar.annotation.LocalDateFormater;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,9 +35,13 @@ public class Facture implements Serializable {
     @Column(name = "FACTURE_PRICE")
     private double price;
 
+    @LocalDateFormater
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "FACTURE_START_DATE")
     private LocalDate startDate;
 
+    @LocalDateFormater
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "FACTURE_END_DATE")
     private LocalDate endDate;
 
