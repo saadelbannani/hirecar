@@ -21,8 +21,8 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("/car")
-@Api(value="carstore", description="Operations for car renting")
+@RequestMapping("/cars")
+@Api(value="carsStore", description="Operations for cars renting")
 public class CarController {
 
     @Autowired
@@ -42,14 +42,14 @@ public class CarController {
         return new ResponseEntity<>(cars.isPresent() ? cars.get() : null, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Create new car", response = Iterable.class)
+    @ApiOperation(value = "Create a new car", response = Iterable.class)
     @RequestMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity<Car> create(@NotNull @RequestBody Car car) {
         Car carCreated = carRepository.save(car);
         return new ResponseEntity<>(carCreated != null ? carCreated : null, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Update existing car", response = Iterable.class)
+    @ApiOperation(value = "Update an existing car", response = Iterable.class)
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Integer> update(@NotNull @RequestBody Car car) {
         if (car.getId() != null && carRepository.exists(car.getId())) {
@@ -59,4 +59,3 @@ public class CarController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
-
