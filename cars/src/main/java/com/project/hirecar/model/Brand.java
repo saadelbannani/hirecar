@@ -3,17 +3,9 @@ package com.project.hirecar.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +18,11 @@ import java.util.UUID;
 public class Brand implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BRAND_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid")
+    @Type(type="uuid-char")
     @Column(name = "BRAND_UUID", unique = true, nullable = false)
     private UUID uuid;
 
@@ -39,6 +30,10 @@ public class Brand implements Serializable {
     private String name;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "brand")
-    private List<Model> models = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true, mappedBy = "brand")
+    private List<Car> models = new ArrayList<>();
+
+    public Brand() {
+        this.uuid = UUID.randomUUID();
+    }
 }

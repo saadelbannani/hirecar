@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,34 +22,41 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cars")
 @Api(value="carsStore", description="Operations for cars renting")
+@EnableTransactionManagement
 public class CarController {
 
     @Autowired
     private CarRepository carRepository;
 
     @ApiOperation(value = "View one of available cars", response = Iterable.class)
-    @RequestMapping(value = "/getbyid/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@NotNull @PathVariable Integer id) {
         Optional<Car> car = Optional.ofNullable(carRepository.findOne(id));
         return new ResponseEntity<>(car.isPresent() ? car.get() : null, HttpStatus.OK);
     }
 
     @ApiOperation(value = "View a list of available cars", response = Iterable.class)
-    @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public ResponseEntity<List<Car>> getAll() {
         Optional<List<Car>> cars = Optional.ofNullable(carRepository.findAll());
         return new ResponseEntity<>(cars.isPresent() ? cars.get() : null, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new car", response = Iterable.class)
-    @RequestMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
+    @Transactional
     public ResponseEntity<Car> create(@NotNull @RequestBody Car car) {
         Car carCreated = carRepository.save(car);
         return new ResponseEntity<>(carCreated != null ? carCreated : null, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update an existing car", response = Iterable.class)
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Integer> update(@NotNull @RequestBody Car car) {
         if (car.getId() != null && carRepository.exists(car.getId())) {
             Car carUpdated = carRepository.save(car);
