@@ -10,33 +10,44 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "CAR")
-@Getter
-@Setter
 public class Car implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name = "CAR_GEN", sequenceName = "CAR_SEQ", allocationSize = 10)
+	@GeneratedValue(generator = "CAR_GEN", strategy = GenerationType.SEQUENCE)
 	@Column(name = "CAR_ID", nullable = false)
+	@Getter
 	private Integer id;
 
 	@Type(type="uuid-char")
 	@Column(name = "CAR_UUID", unique = true, nullable = false)
+	@Getter
 	private UUID uuid;
 
 	@Column(name = "CAR_NAME")
+	@Getter
+	@Setter
 	private String name;
 
 	@Column(name = "CAR_YEAR")
+	@Getter
+	@Setter
 	private String year;
 
 	@Column(name = "CAR_COLOR")
+	@Getter
+	@Setter
 	private String color;
 
 	@Column(name = "CAR_IMMATRICULATION")
+	@Getter
+	@Setter
 	private String immatriculation;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "CAR_BRAND_ID")
+	@Getter
+	@Setter
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CAR_BRAND_ID", nullable = false)
 	private Brand brand;
 
 	public Car() {
