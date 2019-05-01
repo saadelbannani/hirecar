@@ -35,7 +35,7 @@ public class ClientController {
     @ApiOperation(value = "View a list of available clients", response = Iterable.class)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
-    public ResponseEntity<List<Client>> getll() {
+    public ResponseEntity<List<Client>> getAll() {
         Optional<List<Client>> clients = Optional.ofNullable(clientRepository.findAll());
         return new ResponseEntity<>(clients.isPresent() ? clients.get() : null, HttpStatus.OK);
     }
