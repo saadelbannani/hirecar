@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -22,7 +20,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cars")
 @Api(value="carsStore", description="Operations for cars renting")
-@EnableTransactionManagement
 public class CarController {
 
     @Autowired
@@ -48,7 +45,6 @@ public class CarController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(method = RequestMethod.POST)
-    @Transactional
     public ResponseEntity<Car> create(@NotNull @RequestBody Car car) {
         Car carCreated = carRepository.save(car);
         return new ResponseEntity<>(carCreated != null ? carCreated : null, HttpStatus.CREATED);
