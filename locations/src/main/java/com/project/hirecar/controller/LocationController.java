@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -48,7 +45,7 @@ public class LocationController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Create new location", response = Iterable.class)
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Location> create(@NotNull @PathVariable Location location) {
+    public ResponseEntity<Location> create(@NotNull @RequestBody Location location) {
         Location locationCreated = locationRepository.save(location);
         return new ResponseEntity<>(locationCreated, HttpStatus.CREATED);
     }
@@ -57,7 +54,7 @@ public class LocationController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Update existing location", response = Iterable.class)
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Integer> update(@NotNull @PathVariable Location location) {
+    public ResponseEntity<Integer> update(@NotNull @RequestBody Location location) {
         if (location.getId() != null && locationRepository.exists(location.getId())) {
             Location locationUpdated = locationRepository.save(location);
             return new ResponseEntity<>(locationUpdated.getId(), HttpStatus.ACCEPTED);

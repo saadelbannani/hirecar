@@ -1,6 +1,7 @@
 package com.project.hirecar.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hirecar.annotation.LocalDateFormater;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,10 +62,10 @@ public class Facture implements Serializable {
     @Column(name = "FACTURE_END_DATE")
     private LocalDate endDate;
 
+    @JsonIgnore
     @Getter
     @Setter
-    @OneToOne
-    @JoinColumn(name = "FACTURE_LOCATION_ID")
+    @OneToOne(mappedBy = "facture", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Location location;
 
     public Facture() {

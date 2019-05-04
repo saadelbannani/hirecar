@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Optional;
@@ -39,5 +37,24 @@ public class FactureController {
     public ResponseEntity<Facture> getById(@PathVariable @NotNull Integer id) {
         Optional<Facture> facture = Optional.ofNullable(factureRepository.findOne(id));
         return new ResponseEntity<>(facture.isPresent() ? facture.get() : null, HttpStatus.OK);
+    }
+
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Facture> create(@NotNull @RequestBody Facture facture) {
+        Facture factureCreated = factureRepository.save(facture);
+        return new ResponseEntity<>(factureCreated, HttpStatus.CREATED);
+    }
+
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Facture> update(@NotNull @RequestBody Facture facture) {
+        if(facture.getId() != null && factureRepository.exists(facture.getId())) {
+            Facture factureUpdated = factureRepository.save(facture);
+            return new ResponseEntity<>(factureUpdated, HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

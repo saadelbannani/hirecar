@@ -41,6 +41,12 @@ public class Location implements Serializable {
     @Column(name = "LOCATION_CLIENT_UUID", nullable = false)
     private UUID uuidClient;
 
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name = "LOCATION_FACTURE_ID")
+    private Facture facture;
+
     public Location() {
         this.uuid = UUID.randomUUID();
     }
