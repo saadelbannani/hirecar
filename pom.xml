@@ -23,7 +23,7 @@
     </modules>
 
     <properties>
-        <springframework.version>4.3.16.RELEASE</springframework.version>
+        <springframework.version>4.3.18.RELEASE</springframework.version>
         <springboot.version>1.5.12.RELEASE</springboot.version>
         <hibernate.version>5.0.5.Final</hibernate.version>
         <jackson.version>2.8.6</jackson.version>
