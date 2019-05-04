@@ -1,82 +1,55 @@
 package com.project.hirecar.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ADDRESS_ID")
+    @SequenceGenerator(name = "ADDRESS_GEN", sequenceName = "ADDRESS_SEQ", allocationSize = 10)
+    @GeneratedValue(generator = "ADDRESS_GEN", strategy = GenerationType.SEQUENCE)
+    @Column(name = "ADDRESS_ID", nullable = false)
+    @Getter
     private Integer id;
 
+    @Type(type="uuid-char")
+    @Column(name = "ADDRESS_UUID", unique = true, nullable = false)
+    @Getter
+    private UUID uuid;
+
+    @Getter
+    @Setter
     @Column(name = "ADDRESS_NUMBER")
     private String number;
 
+    @Getter
+    @Setter
     @Column(name = "ADDRESS_LINE")
     private String addressLine;
 
+    @Getter
+    @Setter
     @Column(name = "ADDRESS_ZIP_CODE")
     private String zipCode;
 
+    @Getter
+    @Setter
     @Column(name = "ADDRESS_CITY")
     private String city;
 
+    @Getter
+    @Setter
     @Column(name = "ADDRESS_COUNTRY")
     private String country;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getAddressLine() {
-        return addressLine;
-    }
-
-    public void setAddressLine(String addressLine) {
-        this.addressLine = addressLine;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public Address() {
+        this.uuid = UUID.randomUUID();
     }
 }
