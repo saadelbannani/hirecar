@@ -1,64 +1,53 @@
 package com.project.hirecar.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "LOCATION")
 public class Location implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "LOCATION_ID")
+    @SequenceGenerator(name = "LOCATION_GEN", sequenceName = "LOCATION_SEQ", allocationSize = 10)
+    @GeneratedValue(generator = "LOCATION_GEN", strategy = GenerationType.SEQUENCE)
+    @Column(name = "LOCATION_ID", nullable = false)
+    @Getter
     private Integer id;
 
+    @Type(type = "uuid-char")
+    @Column(name = "LOCATION_UUID", unique = true, nullable = false)
+    @Getter
+    private UUID uuid;
+
+    @Getter
+    @Setter
     @Column(name = "LOCATION_NUMBER")
     private String locationNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "LOCATION_CAR_ID", nullable = false)
-    private Car car;
+    @Getter
+    @Setter
+    @Type(type = "uuid-char")
+    @Column(name = "LOCATION_CAR_UUID", nullable = false)
+    private UUID uuidCar;
 
-    @ManyToOne
-    @JoinColumn(name = "LOCATION_CLIENT_ID", nullable = false)
-    private Client client;
+    @Getter
+    @Setter
+    @Type(type = "uuid-char")
+    @Column(name = "LOCATION_CLIENT_UUID", nullable = false)
+    private UUID uuidClient;
 
-    public Integer getId() {
-        return id;
-    }
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name = "LOCATION_FACTURE_ID")
+    private Facture facture;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLocationNumber() {
-        return locationNumber;
-    }
-
-    public void setLocationNumber(String locationNumber) {
-        this.locationNumber = locationNumber;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public Location() {
+        this.uuid = UUID.randomUUID();
     }
 }

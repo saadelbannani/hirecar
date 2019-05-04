@@ -1,115 +1,74 @@
 package com.project.hirecar.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.hirecar.annotation.LocalDateFormater;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "FACTURE")
 public class Facture implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FACTURE_ID")
+    @SequenceGenerator(name = "FACTURE_GEN", sequenceName = "FACTURE_SEQ", allocationSize = 10)
+    @GeneratedValue(generator = "FACTURE_GEN", strategy = GenerationType.SEQUENCE)
+    @Column(name = "FACTURE_ID", nullable = false)
+    @Getter
     private Integer id;
 
+    @Type(type="uuid-char")
+    @Column(name = "FACTURE_UUID", unique = true, nullable = false)
+    @Getter
+    private UUID uuid;
+
+    @Getter
+    @Setter
     @Column(name = "FACTURE_NUMBER")
     private String factureNumber;
 
+    @Getter
+    @Setter
     @Column(name = "FACTURE_TYPE")
     private String type;
 
+    @Getter
+    @Setter
     @Column(name = "FACTURE_STAT")
     private String stat;
 
+    @Getter
+    @Setter
     @Column(name = "FACTURE_PRICE")
     private double price;
 
+    @Getter
+    @Setter
     @LocalDateFormater
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "FACTURE_START_DATE")
     private LocalDate startDate;
 
+    @Getter
+    @Setter
     @LocalDateFormater
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "FACTURE_END_DATE")
     private LocalDate endDate;
 
-    @OneToOne
-    @JoinColumn(name = "FACTURE_LOCATION_ID")
+    @JsonIgnore
+    @Getter
+    @Setter
+    @OneToOne(mappedBy = "facture", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Location location;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFactureNumber() {
-        return factureNumber;
-    }
-
-    public void setFactureNumber(String factureNumber) {
-        this.factureNumber = factureNumber;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getStat() {
-        return stat;
-    }
-
-    public void setStat(String stat) {
-        this.stat = stat;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
+    public Facture() {
+        this.uuid = UUID.randomUUID();
     }
 }
