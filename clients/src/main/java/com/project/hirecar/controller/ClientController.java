@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
-@Api(value="clientstore", description="Operations for clients")
+@Api(value="clientstore")
 public class ClientController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class ClientController {
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Client> getById(@PathVariable @NotNull Integer id) {
         Optional<Client> client = Optional.ofNullable(clientRepository.findOne(id));
-        return new ResponseEntity<>(client.isPresent() ? client.get() : null, HttpStatus.OK);
+        return new ResponseEntity<>(client.orElse(null), HttpStatus.OK);
     }
 
     @ApiOperation(value = "View a list of available clients", response = Iterable.class)
@@ -37,7 +37,7 @@ public class ClientController {
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public ResponseEntity<List<Client>> getAll() {
         Optional<List<Client>> clients = Optional.ofNullable(clientRepository.findAll());
-        return new ResponseEntity<>(clients.isPresent() ? clients.get() : null, HttpStatus.OK);
+        return new ResponseEntity<>(clients.orElse(null), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new client", response = Iterable.class)
@@ -46,7 +46,7 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Client> create(@NotNull @RequestBody Client client) {
         Client clientCreated = clientRepository.save(client);
-        return new ResponseEntity<>(clientCreated != null ? clientCreated : null, HttpStatus.CREATED);
+        return new ResponseEntity<>(clientCreated, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update an existing client", response = Iterable.class)

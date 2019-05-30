@@ -2,6 +2,8 @@ package com.project.hirecar.controller;
 
 import com.project.hirecar.model.Location;
 import com.project.hirecar.repository.LocationRepository;
+import com.project.hirecar.rest.CallRestTemplate;
+import com.project.hirecar.rest.dto.input.LocationCarInputDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/location")
-@Api(value = "locationstore", description = "Operations for car renting")
+@Api(value = "locationstore")
 public class LocationController {
 
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private CallRestTemplate callRestTemplate;
+
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "View one of available locations", response = Iterable.class)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Location> getById(@NotNull @PathVariable Integer id) {
@@ -60,5 +64,14 @@ public class LocationController {
             return new ResponseEntity<>(locationUpdated.getId(), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "View one of available cars", response = Iterable.class)
+    @RequestMapping(value = "/getcarbyuuid/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<LocationCarInputDto> getCarById(@NotNull @PathVariable String uuid) {
+        Optional<LocationCarInputDto> location = Optional.ofNullable(
+                callRestTemplate.getCarByUuid(uuid).getBody());
+        return new ResponseEntity<>(location.orElse(null), HttpStatus.OK);
     }
 }
