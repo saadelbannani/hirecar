@@ -1,9 +1,10 @@
 package com.project.hirecar.controller;
 
+import com.project.hirecar.dto.LocationDto;
 import com.project.hirecar.model.Location;
 import com.project.hirecar.repository.LocationRepository;
 import com.project.hirecar.rest.CallRestTemplate;
-import com.project.hirecar.rest.dto.input.LocationCarInputDto;
+import com.project.hirecar.service.LocationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,15 @@ public class LocationController {
     @Autowired
     private CallRestTemplate callRestTemplate;
 
+    @Autowired
+    private LocationService locationService;
+
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "View one of available locations", response = Iterable.class)
-    @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Location> getById(@NotNull @PathVariable Integer id) {
-        Optional<Location> location = Optional.ofNullable(locationRepository.findOne(id));
-        return new ResponseEntity<>(location.orElse(null), HttpStatus.OK);
+    @GetMapping(value = "/getbyid/{id}")
+    public ResponseEntity<LocationDto> getById(@NotNull @PathVariable Integer id) {
+        LocationDto locationDto = locationService.getById(id);
+        return new ResponseEntity<>(locationDto, HttpStatus.OK);
     }
 
     @Produces(MediaType.APPLICATION_JSON_VALUE)
@@ -64,14 +68,5 @@ public class LocationController {
             return new ResponseEntity<>(locationUpdated.getId(), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "View one of available cars", response = Iterable.class)
-    @RequestMapping(value = "/getcarbyuuid/{uuid}", method = RequestMethod.GET)
-    public ResponseEntity<LocationCarInputDto> getCarById(@NotNull @PathVariable String uuid) {
-        Optional<LocationCarInputDto> location = Optional.ofNullable(
-                callRestTemplate.getCarByUuid(uuid).getBody());
-        return new ResponseEntity<>(location.orElse(null), HttpStatus.OK);
     }
 }
