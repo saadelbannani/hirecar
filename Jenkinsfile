@@ -21,7 +21,7 @@ node {
 
         jarMap.each { jarName, port ->
             def imageUp = sh(script: "docker inspect -f '{{.State.Running}}' ${jarName}", returnStdout: true)
-            if ($imageUp = "true") {
+            if ($imageUp == "true") {
                 sh "docker stop ${jarName}"
                 sh "docker rm ${jarName}"
             }
