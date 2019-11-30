@@ -20,7 +20,7 @@ node {
         echo "Kill running images and start new images."
 
         jarMap.each { jarName, port ->
-            def imageUp = sh(script: "docker inspect -f '{{.State.Running}}' ${jarName}", returnStdout: true)
+            def imageUp = sh(script: "docker container inspect -f '{{json .State.Running}}' ${jarName}", returnStdout: true)
             if ($imageUp == "true") {
                 sh "docker stop ${jarName}"
                 sh "docker rm ${jarName}"
