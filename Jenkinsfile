@@ -22,7 +22,7 @@ node {
     }
 
     stage("Run images") {
-        sh "docker-compose up"
+        sh "docker-compose up -d"
     }
 
     stage("Clean WS") {
