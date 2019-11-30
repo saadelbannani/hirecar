@@ -6,21 +6,21 @@ node {
         checkout scm
     }
 
-    stage("Build") {
+    stage("Build project") {
         sh "mvn clean package"
     }
 
-    stage("Docker build") {
+    stage("Build images") {
     	jarMap.each { jarName, port ->
         	sh "docker build -t ${jarName} --build-arg jarName=${jarName} --build-arg port=${port} ."
         }
     }
 
-    stage("Docker run") {
+    stage("Run images") {
         sh "docker images"
-        jarMap.each { jarName, port ->
-        	sh "docker run -p ${port}:${port} -d ${jarName}"
-        }
+
+        sh "docker-compose down"
+        sh "docker-compose up"
     }
 
     stage("Clean WS") {
