@@ -17,6 +17,16 @@ node {
     }
 
     stage("Docker run") {
+        echo "Kill running images and start new images."
+
+        jarMap.each { jarName, port ->
+            def imageUp = sh(script: "docker inspect -f '{{.State.Running}}' ${jarName}", returnStdout: true)
+            if ($imageUp = "true") {
+                sh "docker stop ${jarName}"
+                sh "docker rm ${jarName}"
+            }
+        }
+
         sh "docker images"
         jarMap.each { jarName, port ->
         	sh "docker run -p ${port}:${port} -d ${jarName}"
