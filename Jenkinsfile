@@ -14,12 +14,14 @@ node {
     	jarMap.each { jarName, port ->
         	sh "docker build -t ${jarName} --build-arg jarName=${jarName} --build-arg port=${port} ."
         }
+        sh "docker images"
+    }
+
+     stage("Stop running images") {
+        sh "docker-compose down"
     }
 
     stage("Run images") {
-        sh "docker images"
-
-        sh "docker-compose down"
         sh "docker-compose up"
     }
 
