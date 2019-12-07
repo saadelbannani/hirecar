@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.project.hirecar")
+@ComponentScan(basePackages = {"com.project.hirecar.mapper"})
 @EnableJpaRepositories(basePackages = "com.project.hirecar.repository")
 @EntityScan(basePackages = "com.project.hirecar.model")
 public class SpirngBootApplicationRun extends WebMvcConfigurerAdapter {

@@ -1,5 +1,6 @@
 package com.project.hirecar.controller;
 
+import com.project.hirecar.mapper.CarMapper;
 import com.project.hirecar.model.Car;
 import com.project.hirecar.repository.CarRepository;
 import com.project.hirecar.stream.CarStreamService;
@@ -27,10 +28,13 @@ public class CarController {
 
     private CarStreamService carStreamService;
 
+    private CarMapper carMapper;
+
     @Autowired
-    public CarController(CarRepository carRepository, CarStreamService carStreamService) {
+    public CarController(CarRepository carRepository, CarStreamService carStreamService, CarMapper carMapper) {
         this.carRepository = carRepository;
         this.carStreamService = carStreamService;
+        this.carMapper = carMapper;
     }
 
     @ApiOperation(value = "View one of available cars", response = Iterable.class)
@@ -38,7 +42,7 @@ public class CarController {
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@NotNull @PathVariable Integer id) {
         Optional<Car> car = Optional.ofNullable(carRepository.findOne(id));
-        carStreamService.sendCar(carStreamService.toCarStreamDto(car.get()));
+        carStreamService.sendCar(carMapper.toCarStreamDto(car.get()));
         return new ResponseEntity<>(car.isPresent() ? car.get() : null, HttpStatus.OK);
     }
 
