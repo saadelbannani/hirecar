@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.hirecar.rest.dto.input.LocationCarInputDto;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class LocationDto {
 
@@ -11,7 +13,7 @@ public class LocationDto {
     private Integer id;
 
     @JsonProperty("uuid")
-    private String uuid;
+    private UUID uuid;
 
     @JsonProperty("locationNumber")
     private String locationNumber;
@@ -20,7 +22,7 @@ public class LocationDto {
     private LocationCarInputDto car;
 
     @JsonProperty("uuidClient")
-    private String uuidClient;
+    private UUID uuidClient;
 
     @JsonProperty("facture")
     private FactureDto facture;

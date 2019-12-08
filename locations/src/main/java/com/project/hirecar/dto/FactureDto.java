@@ -3,7 +3,9 @@ package com.project.hirecar.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class FactureDto {
@@ -12,7 +14,7 @@ public class FactureDto {
     private Integer id;
 
     @JsonProperty("uuid")
-    private String uuid;
+    private UUID uuid;
 
     @JsonProperty("factureNumber")
     private String factureNumber;
@@ -24,7 +26,7 @@ public class FactureDto {
     private String stat;
 
     @JsonProperty("price")
-    private double price;
+    private BigDecimal price;
 
     @JsonProperty("startDate")
     private LocalDate startDate;
