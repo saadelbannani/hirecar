@@ -1,9 +1,7 @@
 package com.project.hirecar.controller;
 
-import com.project.hirecar.mapper.CarMapper;
 import com.project.hirecar.model.Car;
 import com.project.hirecar.repository.CarRepository;
-import com.project.hirecar.stream.CarStreamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,26 +22,14 @@ import java.util.Optional;
 @Api(value="carsStore", description="Operations for cars renting")
 public class CarController {
 
-    private CarRepository carRepository;
-
-    private CarStreamService carStreamService;
-
-    private CarMapper carMapper;
-
     @Autowired
-    public CarController(CarRepository carRepository, CarStreamService carStreamService,
-                         CarMapper carMapper) {
-        this.carRepository = carRepository;
-        this.carStreamService = carStreamService;
-        this.carMapper = carMapper;
-    }
+    private CarRepository carRepository;
 
     @ApiOperation(value = "View one of available cars", response = Iterable.class)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@NotNull @PathVariable Integer id) {
         Optional<Car> car = Optional.ofNullable(carRepository.findOne(id));
-        carStreamService.publishCar(carMapper.toCarStreamDto(car.get()));
         return new ResponseEntity<>(car.isPresent() ? car.get() : null, HttpStatus.OK);
     }
 
