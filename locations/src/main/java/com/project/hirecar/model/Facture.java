@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class Facture implements Serializable {
     @Getter
     @Setter
     @Column(name = "FACTURE_PRICE")
-    private double price;
+    private BigDecimal price;
 
     @Getter
     @Setter
