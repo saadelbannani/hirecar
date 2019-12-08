@@ -31,7 +31,8 @@ public class CarController {
     private CarMapper carMapper;
 
     @Autowired
-    public CarController(CarRepository carRepository, CarStreamService carStreamService, CarMapper carMapper) {
+    public CarController(CarRepository carRepository, CarStreamService carStreamService,
+                         CarMapper carMapper) {
         this.carRepository = carRepository;
         this.carStreamService = carStreamService;
         this.carMapper = carMapper;
@@ -42,7 +43,7 @@ public class CarController {
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@NotNull @PathVariable Integer id) {
         Optional<Car> car = Optional.ofNullable(carRepository.findOne(id));
-        carStreamService.sendCar(carMapper.toCarStreamDto(car.get()));
+        carStreamService.publishCar(carMapper.toCarStreamDto(car.get()));
         return new ResponseEntity<>(car.isPresent() ? car.get() : null, HttpStatus.OK);
     }
 
