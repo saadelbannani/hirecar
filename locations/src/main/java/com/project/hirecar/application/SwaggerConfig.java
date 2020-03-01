@@ -19,7 +19,7 @@ public class SwaggerConfig {
     }
 
     private Predicate<String> path() {
-        return regex("/location.*");
+        return regex("/locations.*");
     }
 
     private ApiInfo apiInfo() {

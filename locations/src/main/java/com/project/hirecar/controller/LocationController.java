@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/location")
+@RequestMapping("/locations")
 @Api(value = "locationstore")
 public class LocationController {
 

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/facture")
+@RequestMapping("/factures")
 @Api(value="facture")
 public class FactureController {
 
