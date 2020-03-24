@@ -51,6 +51,23 @@
                 </executions>
             </plugin>
         </plugins>
-        <!-- <finalName>cars</finalName>-->
     </build>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProperties>local</activatedProperties>
+            </properties>
+        </profile>
+        <profile>
+            <id>aws</id>
+            <properties>
+                <activatedProperties>aws</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
 </project>
