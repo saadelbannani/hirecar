@@ -1,15 +1,13 @@
-package com.project.hirecar.stream.dto;
+package com.project.hirecar.rest.dto.input;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class CarStreamDto {
+public class LocationCarInputDto {
 
     private Integer id;
 
-    private UUID uuid;
+    private String uuid;
 
     private String name;
 
@@ -21,5 +19,5 @@ public class CarStreamDto {
 
     private boolean disponibility;
 
-    private BrandStreamDto brand;
+    private BrandInputDto brand;
 }

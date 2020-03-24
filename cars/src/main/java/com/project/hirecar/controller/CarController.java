@@ -17,11 +17,12 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/cars")
-@Api(value="carsStore", description="Operations for cars renting")
+@Api(value="carsStore")
 public class CarController {
 
     private CarRepository carRepository;
@@ -52,7 +53,7 @@ public class CarController {
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public ResponseEntity<List<Car>> getAll() {
         Optional<List<Car>> cars = Optional.ofNullable(carRepository.findAll());
-        return new ResponseEntity<>(cars.isPresent() ? cars.get() : null, HttpStatus.OK);
+        return new ResponseEntity<>(cars.orElse(null), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new car", response = Iterable.class)
@@ -61,7 +62,7 @@ public class CarController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Car> create(@NotNull @RequestBody Car car) {
         Car carCreated = carRepository.save(car);
-        return new ResponseEntity<>(carCreated != null ? carCreated : null, HttpStatus.CREATED);
+        return new ResponseEntity<>(carCreated, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update an existing car", response = Iterable.class)
@@ -73,5 +74,14 @@ public class CarController {
             return new ResponseEntity<>(carUpdated.getId(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ApiOperation(value = "View one of available cars", response = Iterable.class)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getcarbyuuid/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<Car> getById(@NotNull @PathVariable String uuid) {
+        Optional<Car> car = Optional.ofNullable(carRepository.getByUuid(UUID.fromString(uuid)));
+        carStreamService.publishCar(carMapper.toCarStreamDto(car.get()));
+        return new ResponseEntity<>(car.orElse(null), HttpStatus.OK);
     }
 }

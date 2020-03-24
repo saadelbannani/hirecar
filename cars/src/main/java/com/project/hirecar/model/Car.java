@@ -44,6 +44,11 @@ public class Car implements Serializable {
 	@Setter
 	private String immatriculation;
 
+	@Column(name = "CAR_DISPONIBILITY")
+	@Getter
+	@Setter
+	private boolean disponibility;
+
 	@Getter
 	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)

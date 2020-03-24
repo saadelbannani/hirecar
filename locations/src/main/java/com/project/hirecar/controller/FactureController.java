@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/facture")
-@Api(value="facture", description="Operations for locations")
+@RequestMapping("/factures")
+@Api(value="facture")
 public class FactureController {
 
     @Autowired
@@ -29,14 +29,14 @@ public class FactureController {
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public ResponseEntity<List<Facture>> getAll() {
         Optional<List<Facture>> factures = Optional.ofNullable(factureRepository.findAll());
-        return new ResponseEntity<>(factures.isPresent() ? factures.get() : null, HttpStatus.OK);
+        return new ResponseEntity<>(factures.orElse(null), HttpStatus.OK);
     }
 
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Facture> getById(@PathVariable @NotNull Integer id) {
         Optional<Facture> facture = Optional.ofNullable(factureRepository.findOne(id));
-        return new ResponseEntity<>(facture.isPresent() ? facture.get() : null, HttpStatus.OK);
+        return new ResponseEntity<>(facture.orElse(null), HttpStatus.OK);
     }
 
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
