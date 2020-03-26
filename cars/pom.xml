@@ -17,6 +17,10 @@
 
     <name>cars</name>
 
+    <properties>
+        <oracle.ojdbc.version>19.3.0.0</oracle.ojdbc.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -27,6 +31,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.ojdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>${oracle.ojdbc.version}</version>
         </dependency>
     </dependencies>
 
