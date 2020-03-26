@@ -51,7 +51,7 @@ public class Car implements Serializable {
 
 	@Getter
 	@Setter
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "CAR_BRAND_ID", nullable = false)
 	private Brand brand;
 
