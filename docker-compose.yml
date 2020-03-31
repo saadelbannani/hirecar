@@ -23,6 +23,46 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: -Xmx256M -Xms128M
     depends_on:
       - zookeeper
 
+  discovery-server:
+    image: saadelbannani/discovery-server:latest
+    container_name: discovery-server
+    ports:
+      - 9091:9091
+
+  api-gateway:
+    image: saadelbannani/api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - 9090:9090
+
+  cars:
+    image: saadelbannani/cars:latest
+    container_name: cars
+    ports:
+      - 8090:8090
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+
+  locations:
+    image: saadelbannani/locations:latest
+    container_name: locations
+    ports:
+      - 8092:8092
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+
+  clients:
+    image: saadelbannani/clients:latest
+    container_name: clients
+    ports:
+      - 8091:8091
