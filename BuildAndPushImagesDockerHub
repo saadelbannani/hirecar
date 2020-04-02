@@ -19,6 +19,7 @@ node {
             def port = values[1]
 
             sh "docker build -t ${dockerRepo}/${jarName}:${version} --build-arg jarName=${jarName} --build-arg port=${port} --build-arg version=${version} ."
+            sh "docker tag ${dockerRepo}/${jarName}:${version} ${dockerRepo}/${jarName}:latest"
         }
         sh "docker images"
     }
@@ -30,7 +31,7 @@ node {
                     def jarName = jar.split(":")[0]
 
                     sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD}"
-                    sh "docker push ${dockerRepo}/${jarName}:${version}"
+                    sh "docker push ${dockerRepo}/${jarName}"
                 }
         }
     }
