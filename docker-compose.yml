@@ -49,6 +49,8 @@ services:
       - zookeeper
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      - "SPRING_PROFILES_ACTIVE=aws"
+      #command: --spring.profiles.active=aws
 
   locations:
     image: saadelbannani/locations:latest
@@ -60,9 +62,12 @@ services:
       - zookeeper
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      - "SPRING_PROFILES_ACTIVE=aws"
 
   clients:
     image: saadelbannani/clients:latest
     container_name: clients
     ports:
       - 8091:8091
+    environment:
+      - "SPRING_PROFILES_ACTIVE=aws"
