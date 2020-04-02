@@ -1,0 +1,49 @@
+node {
+
+    def dockerRepo = "saadelbannani"
+    def jarMap = ["cars:8090":"1.1.1", "clients:8091":"1.1.1", "locations:8092":"1.1.1",
+                    "api-gateway:9090":"1.0.0", "discovery-server:9091":"1.0.0"]
+
+    stage('Checkout code') {
+        checkout scm
+    }
+
+    stage("Build project") {
+        sh "mvn clean package"
+    }
+
+    stage("Build images") {
+        jarMap.each { jar, version ->
+            def values = jar.split(":")
+            def jarName = values[0]
+            def port = values[1]
+
+            sh "docker build -t ${dockerRepo}/${jarName}:${version} --build-arg jarName=${jarName} --build-arg port=${port} --build-arg version=${version} ."
+            sh "docker tag ${dockerRepo}/${jarName}:${version} ${dockerRepo}/${jarName}:latest"
+        }
+        sh "docker images"
+    }
+
+    stage("Push images to Dockerhub") {
+        withCredentials([usernamePassword(credentialsId: 'saad-dockerhub',
+            passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                jarMap.each { jar, version ->
+                    def jarName = jar.split(":")[0]
+
+                    sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD}"
+                    sh "docker push ${dockerRepo}/${jarName}"
+                }
+        }
+    }
+
+    stage("Remove unused images") {
+        jarMap.each { entry ->
+            def jarName = entry.key.split(":")[0]
+            sh "docker images | grep \"${jarName}\" | awk '{ print \$3; }' | xargs docker rmi -f"
+        }
+    }
+
+    stage("Clean WS") {
+        cleanWs()
+    }
+}

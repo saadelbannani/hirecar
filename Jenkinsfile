@@ -1,6 +1,6 @@
 node {
 
-	def jarMap = ["cars":"8090", "clients":"8091", "locations":"8092"]
+	def jarMap = ["cars":"8090", "clients":"8091", "locations":"8092", "api-gateway":"9090", "discovery-server":"9091"]
 
     stage('Checkout code') {
         checkout scm
@@ -17,7 +17,7 @@ node {
         sh "docker images"
     }
 
-     stage("Stop running images") {
+    stage("Stop running images") {
         sh "docker-compose down"
     }
 
