@@ -1,15 +1,26 @@
-FROM java:8-jdk
+FROM alpine:3.9
 
-ARG jarName
-ARG port
-ARG version
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
 
-ENV jarName=${jarName}
-ENV port=${port}
-ENV version=${version}
+# add a simple script that can auto-detect the appropriate JAVA_HOME value
+# based on whether the JDK or only the JRE is installed
+RUN { \
+		echo '#!/bin/sh'; \
+		echo 'set -e'; \
+		echo; \
+		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+	} > /usr/local/bin/docker-java-home \
+	&& chmod +x /usr/local/bin/docker-java-home
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ADD ${jarName}/target/${jarName}-${version}-SNAPSHOT-exec.jar ${jarName}.${version}.jar
+ENV JAVA_VERSION 8u242
+ENV JAVA_ALPINE_VERSION 8.242.08-r0
 
-EXPOSE ${port}
+RUN set -x \
+	&& apk add --no-cache \
+		openjdk8="$JAVA_ALPINE_VERSION" \
+	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
-CMD /bin/bash -c 'java -jar ${jarName}.${version}.jar'
+RUN apk add --update netcat-openbsd && rm -rf /var/cache/apk/*
