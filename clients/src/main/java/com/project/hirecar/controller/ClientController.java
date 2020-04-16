@@ -4,6 +4,7 @@ import com.project.hirecar.model.Client;
 import com.project.hirecar.repository.ClientRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
-@Api(value="clientstore")
+@Api(value = "clientstore")
+@CommonsLog
 public class ClientController {
 
     @Autowired
@@ -36,8 +39,11 @@ public class ClientController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public ResponseEntity<List<Client>> getAll() {
-        Optional<List<Client>> clients = Optional.ofNullable(clientRepository.findAll());
-        return new ResponseEntity<>(clients.orElse(null), HttpStatus.OK);
+        log.info("getting all clients...");
+        List<Client> clients = Optional.ofNullable(clientRepository.findAll()).orElse(new ArrayList<>());
+
+        log.info(String.format("%s clients retrieved.", clients.size()));
+        return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new client", response = Iterable.class)

@@ -19,6 +19,7 @@
 
     <properties>
         <oracle.ojdbc.version>19.3.0.0</oracle.ojdbc.version>
+        <spring.cloud.version>1.0.3.RELEASE</spring.cloud.version>
     </properties>
 
     <dependencies>
@@ -32,10 +33,22 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <!-- Oracle -->
         <dependency>
             <groupId>com.oracle.ojdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>${oracle.ojdbc.version}</version>
+        </dependency>
+        <!-- Spring Cloud Stream -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+            <version>${spring.cloud.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+            <version>${spring.cloud.version}</version>
         </dependency>
     </dependencies>
 
@@ -56,8 +69,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.1.RELEASE</version>
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -100,5 +111,4 @@
             </properties>
         </profile>
     </profiles>
-
 </project>
