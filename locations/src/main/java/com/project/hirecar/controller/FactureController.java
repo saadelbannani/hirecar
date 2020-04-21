@@ -35,7 +35,7 @@ public class FactureController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Facture> getById(@PathVariable @NotNull Integer id) {
-        Optional<Facture> facture = Optional.ofNullable(factureRepository.findOne(id));
+        Optional<Facture> facture = factureRepository.findById(id);
         return new ResponseEntity<>(facture.orElse(null), HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class FactureController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Facture> update(@NotNull @RequestBody Facture facture) {
-        if(facture.getId() != null && factureRepository.exists(facture.getId())) {
+        if(facture.getId() != null && factureRepository.existsById(facture.getId())) {
             Facture factureUpdated = factureRepository.save(facture);
             return new ResponseEntity<>(factureUpdated, HttpStatus.ACCEPTED);
         }

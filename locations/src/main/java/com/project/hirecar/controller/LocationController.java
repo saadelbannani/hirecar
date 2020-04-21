@@ -3,7 +3,6 @@ package com.project.hirecar.controller;
 import com.project.hirecar.dto.LocationDto;
 import com.project.hirecar.model.Location;
 import com.project.hirecar.repository.LocationRepository;
-import com.project.hirecar.rest.CallRestTemplate;
 import com.project.hirecar.service.LocationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,9 +25,6 @@ public class LocationController {
 
     @Autowired
     private LocationRepository locationRepository;
-
-    @Autowired
-    private CallRestTemplate callRestTemplate;
 
     @Autowired
     private LocationService locationService;
@@ -63,7 +59,7 @@ public class LocationController {
     @ApiOperation(value = "Update existing location", response = Iterable.class)
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Integer> update(@NotNull @RequestBody Location location) {
-        if (location.getId() != null && locationRepository.exists(location.getId())) {
+        if (location.getId() != null && locationRepository.existsById(location.getId())) {
             Location locationUpdated = locationRepository.save(location);
             return new ResponseEntity<>(locationUpdated.getId(), HttpStatus.ACCEPTED);
         }

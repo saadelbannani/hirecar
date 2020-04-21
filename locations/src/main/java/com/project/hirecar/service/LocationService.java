@@ -32,7 +32,7 @@ public class LocationService {
     public LocationDto getById(Integer id) {
         LocationDto locationDto = new LocationDto();
 
-        Optional<Location> location = Optional.ofNullable(locationRepository.findOne(id));
+        Optional<Location> location = locationRepository.findById(id);
         if (location.isPresent()) {
             Location locationCar = location.get();
             locationDto = locationMapper.fromLocation(locationCar);

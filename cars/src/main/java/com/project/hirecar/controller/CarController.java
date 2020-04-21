@@ -43,7 +43,7 @@ public class CarController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@NotNull @PathVariable Integer id) {
-        Optional<Car> car = Optional.ofNullable(carRepository.findOne(id));
+        Optional<Car> car = carRepository.findById(id);
         carStreamService.publishCar(carMapper.toCarStreamDto(car.get()));
         return new ResponseEntity<>(car.isPresent() ? car.get() : null, HttpStatus.OK);
     }
@@ -69,7 +69,7 @@ public class CarController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Integer> update(@NotNull @RequestBody Car car) {
-        if (car.getId() != null && carRepository.exists(car.getId())) {
+        if (car.getId() != null && carRepository.existsById(car.getId())) {
             Car carUpdated = carRepository.save(car);
             return new ResponseEntity<>(carUpdated.getId(), HttpStatus.OK);
         }

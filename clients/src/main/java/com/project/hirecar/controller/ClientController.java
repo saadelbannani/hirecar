@@ -31,7 +31,7 @@ public class ClientController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<Client> getById(@PathVariable @NotNull Integer id) {
-        Optional<Client> client = Optional.ofNullable(clientRepository.findOne(id));
+        Optional<Client> client = clientRepository.findById(id);
         return new ResponseEntity<>(client.orElse(null), HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class ClientController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Integer> update(@NotNull @RequestBody Client client) {
-        if (client.getId() != null && clientRepository.exists(client.getId())) {
+        if (client.getId() != null && clientRepository.existsById(client.getId())) {
             Client clientUpdated = clientRepository.save(client);
             return new ResponseEntity<>(clientUpdated.getId(), HttpStatus.OK);
         }
